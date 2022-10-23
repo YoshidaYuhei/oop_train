@@ -1,20 +1,26 @@
-import logging
-
 
 class Gear:
-    def __init__(self, chainring, cog, rim, tire):
+    def __init__(self, chainring, cog):
         self.chainring = chainring
         self.cog = cog
-        self.rim = rim
-        self.tire = tire
+
+    @property
+    def chainring(self):
+        return self.__chainring
+
+    # セッターメソッドを使って不正な値を入れられないようにしている
+    @chainring.setter
+    def chainring(self, value):
+        if value > 0:
+            self.__chainring = value
+        else:
+            raise ValueError
 
     def ratio(self):
         return self.chainring / float(self.cog)
 
-    def gear_inches(self):
-        return self.ratio() * (self.rim + (self.tire * 2))
-
 
 if __name__ == '__main__':
-    print(Gear(52, 11, 26, 1.5).gear_inches())
-    print(Gear(52, 11, 26, 1.5).ratio())
+    gear = Gear(52, 11)
+    gear.chainring = -30
+    print(gear.ratio())
